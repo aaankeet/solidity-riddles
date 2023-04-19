@@ -37,6 +37,9 @@ describe(NAME, function () {
             nameServiceBank,
             TwentyEther,
             NameServiceAttacker,
+            victim,
+            attacker,
+            now,
         };
     }
 
@@ -51,15 +54,19 @@ describe(NAME, function () {
             NameServiceAttackerBalanceOfBefore = ethers.utils.parseUnits(
                 ethers.utils.formatEther(await network.provider.send("eth_getBalance", [NameServiceAttacker.address]))
             );
+            console.log(bankBalanceOfBefore, NameServiceAttackerBalanceOfBefore);
         });
 
         it("conduct your attack here", async function () {
+            ({ nameServiceBank, TwentyEther, NameServiceAttacker, victim, attacker, now } = await loadFixture(setup));
             // Your exploit here
             // You will may create an attacking smart contract(s) but
             // You may not modify any other part of the test or the
             // contract you are attacking.
             // We've already written the JS code above to deploy a
             // contract called "NameServiceAttacker" for you.
+
+            await NameServiceAttacker.connect(attacker).attack({ value: ethers.utils.parseEther("1") });
         });
 
         after(async function () {
